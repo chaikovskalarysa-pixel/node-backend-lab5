@@ -11,10 +11,17 @@ export const connectDB = async () => {
   }
 
   try {
-    await mongoose.connect(uri);
-    console.log("MongoDB connected");
+    await mongoose.connect(uri, {
+      tls: true,
+      tlsAllowInvalidCertificates: false,
+      maxPoolSize: 10,
+      serverSelectionTimeoutMS: 5000,
+      socketTimeoutMS: 45000,
+    });
+    
+    console.log("MongoDB connected successfully");
   } catch (err) {
-    console.error("Mongo error:", err);
+    console.error("Mongo error:", err.message || err);
     throw err;
   }
 };
